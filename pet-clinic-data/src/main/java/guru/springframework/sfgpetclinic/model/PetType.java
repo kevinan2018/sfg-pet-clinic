@@ -10,4 +10,9 @@ public class PetType extends BaseEntity<Long> {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public Long nextId(Long id) {
+        return id == null ? 1 : id + 1;
+    }
 }

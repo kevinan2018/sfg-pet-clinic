@@ -2,7 +2,7 @@ package guru.springframework.sfgpetclinic.model;
 
 import java.io.Serializable;
 
-public class BaseEntity <T> implements Serializable {
+public abstract class BaseEntity <T extends Comparable<? super T>> implements Serializable, Comparable<BaseEntity<T>> {
 
     private T id;
 
@@ -14,4 +14,10 @@ public class BaseEntity <T> implements Serializable {
         this.id = id;
     }
 
+    @Override
+    public int compareTo(BaseEntity<T> other) {
+        return id.compareTo(other.id);
+    }
+
+    abstract public T nextId(T t);
 }

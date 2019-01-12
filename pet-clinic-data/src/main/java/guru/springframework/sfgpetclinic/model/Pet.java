@@ -30,4 +30,9 @@ public class Pet extends BaseEntity<Long> {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
+    @Override
+    public Long nextId(Long id) {
+        return id + 1;
+    }
 }

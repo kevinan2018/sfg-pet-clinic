@@ -19,4 +19,9 @@ public class Person extends BaseEntity<Long> {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public Long nextId(Long id) {
+        return id == null ? 1 : id + 1;
+    }
 }

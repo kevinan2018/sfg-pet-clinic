@@ -2,12 +2,9 @@ package guru.springframework.sfgpetclinic.services.map;
 
 import guru.springframework.sfgpetclinic.model.BaseEntity;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public abstract class AbstractMapService<T extends BaseEntity<ID>, ID> {
+public abstract class AbstractMapService<T extends BaseEntity<ID>, ID extends Comparable<? super ID>> {
 
     protected Map<ID, T> map = new HashMap<>();
 
@@ -23,7 +20,7 @@ public abstract class AbstractMapService<T extends BaseEntity<ID>, ID> {
 
         if (object != null) {
             if (object.getId() == null) {
-                object.setId(getNextId());
+                object.setId(object.nextId(getMaxId()));
             }
             map.put(object.getId(), object);
         } else {
@@ -41,20 +38,10 @@ public abstract class AbstractMapService<T extends BaseEntity<ID>, ID> {
         map.remove(id);
     }
 
-    abstract protected ID getNextId();
-
-    // hackish code
-    private ID getMaxId() {
+    protected ID getMaxId() {
          return map.keySet().stream()
-                .filter(key -> key instanceof Number)
-                .max((n1, n2) -> {
-                    double dv = ((Number) n1).longValue() - ((Number) n2).longValue();
-                    if (dv < 0) return -1;
-                    else if (dv > 0) return 1;
-                    else return 0;
-                })
+                .max(Comparator.naturalOrder()) //(n1, n2) -> n1.compareTo(n2)
                 .orElse(null);
     }
-
 
 }
