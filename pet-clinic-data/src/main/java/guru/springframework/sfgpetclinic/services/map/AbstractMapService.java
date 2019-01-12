@@ -1,46 +1,60 @@
 package guru.springframework.sfgpetclinic.services.map;
 
 import guru.springframework.sfgpetclinic.model.BaseEntity;
-import guru.springframework.sfgpetclinic.services.CrudService;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractMapService<T extends BaseEntity<ID>, ID> implements CrudService<T, ID> {
+public abstract class AbstractMapService<T extends BaseEntity<ID>, ID> {
 
     protected Map<ID, T> map = new HashMap<>();
 
-    @Override
     public Set<T> findAll() {
         return  new HashSet<>(map.values());
     }
 
-    @Override
     public T findById(ID id) {
         return map.get(id);
     }
 
-    //    T save(ID id, T object){
-    //        map.put(id, object);
-    //        return object;
-    //    }
-
-    @Override
     public T save(T object) {
-        map.put(object.getId(), object);
+
+        if (object != null) {
+            if (object.getId() == null) {
+                object.setId(getNextId());
+            }
+            map.put(object.getId(), object);
+        } else {
+            throw new RuntimeException("Object cannot be null");
+        }
+
         return object;
     }
 
-    @Override
     public void delete(T object) {
         map.entrySet().removeIf(entry -> entry.getValue().equals(object));
     }
 
-    @Override
     public void deleteById(ID id) {
         map.remove(id);
     }
+
+    abstract protected ID getNextId();
+
+    // hackish code
+    private ID getMaxId() {
+         return map.keySet().stream()
+                .filter(key -> key instanceof Number)
+                .max((n1, n2) -> {
+                    double dv = ((Number) n1).longValue() - ((Number) n2).longValue();
+                    if (dv < 0) return -1;
+                    else if (dv > 0) return 1;
+                    else return 0;
+                })
+                .orElse(null);
+    }
+
 
 }
