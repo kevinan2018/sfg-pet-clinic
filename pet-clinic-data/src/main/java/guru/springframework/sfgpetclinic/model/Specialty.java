@@ -14,6 +14,6 @@ public class Specialty extends BaseEntity<Long> {
 
     @Override
     public Long nextId(Long id) {
-        return id + 1;
+        return id == null ? 1 : id + 1;
     }
 }
