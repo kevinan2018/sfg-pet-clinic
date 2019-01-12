@@ -1,21 +1,25 @@
 package guru.springframework.sfgpetclinic.services.map;
 
 import guru.springframework.sfgpetclinic.model.BaseEntity;
+import guru.springframework.sfgpetclinic.services.CrudService;
 
 import java.util.*;
 
-public abstract class AbstractMapService<T extends BaseEntity<ID>, ID extends Comparable<? super ID>> {
+public abstract class AbstractMapService<T extends BaseEntity<ID>, ID extends Comparable<? super ID>> implements CrudService<T, ID> {
 
     protected Map<ID, T> map = new HashMap<>();
 
+    @Override
     public Set<T> findAll() {
         return  new HashSet<>(map.values());
     }
 
+    @Override
     public T findById(ID id) {
         return map.get(id);
     }
 
+    @Override
     public T save(T object) {
 
         if (object != null) {
@@ -30,15 +34,17 @@ public abstract class AbstractMapService<T extends BaseEntity<ID>, ID extends Co
         return object;
     }
 
+    @Override
     public void delete(T object) {
         map.entrySet().removeIf(entry -> entry.getValue().equals(object));
     }
 
+    @Override
     public void deleteById(ID id) {
         map.remove(id);
     }
 
-    protected ID getMaxId() {
+    private ID getMaxId() {
          return map.keySet().stream()
                 .max(Comparator.naturalOrder()) //(n1, n2) -> n1.compareTo(n2)
                 .orElse(null);
