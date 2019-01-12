@@ -6,7 +6,7 @@ public class Owner extends Person {
 
     private String address;
     private String city;
-    private String telephon;
+    private String telephone;
     private Set<Pet> pets;
 
     public String getAddress() {
@@ -25,12 +25,12 @@ public class Owner extends Person {
         this.city = city;
     }
 
-    public String getTelephon() {
-        return telephon;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelephon(String telephon) {
-        this.telephon = telephon;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public Set<Pet> getPets() {
