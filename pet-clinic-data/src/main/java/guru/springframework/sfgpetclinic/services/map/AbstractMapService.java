@@ -46,7 +46,7 @@ public abstract class AbstractMapService<T extends BaseEntity<ID>, ID extends Co
 
     private ID getMaxId() {
          return map.keySet().stream()
-                .max(Comparator.naturalOrder()) //(n1, n2) -> n1.compareTo(n2)
+                .max(Comparator.naturalOrder())
                 .orElse(null);
     }
 
