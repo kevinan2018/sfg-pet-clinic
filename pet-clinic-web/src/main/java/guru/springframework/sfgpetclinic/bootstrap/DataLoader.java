@@ -59,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
         dentistry.setDescription("Dentistry");
         Specialty savedDentistry = specialtyService.save(dentistry);
 
-        Owner owner1 = Owner.builder().address("1231231234")
+        Owner owner1 = Owner.builder().address("1231 Brickerel")
                 .city("Miami")
                 .firstName("Michael")
                 .lastName("Weston")

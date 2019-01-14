@@ -22,4 +22,9 @@ public class PetType extends BaseEntity<Long> {
     public Long nextId(Long id) {
         return id == null ? 1 : id + 1;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
