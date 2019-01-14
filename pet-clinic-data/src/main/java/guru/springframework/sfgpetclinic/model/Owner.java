@@ -1,9 +1,6 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -29,7 +26,7 @@ public class Owner extends Person {
     private String telephone;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    //@Builder.Default
-    final private Set<Pet> pets = new HashSet<>();
+    @Builder.Default
+    private Set<Pet> pets = new HashSet<>();
 
 }

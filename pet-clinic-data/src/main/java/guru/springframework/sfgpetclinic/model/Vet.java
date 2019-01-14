@@ -1,8 +1,6 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -15,7 +13,7 @@ import static javax.persistence.CascadeType.REFRESH;
 @Getter
 @Setter
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @Entity
 @Table(name = "vets")
@@ -23,6 +21,6 @@ public class Vet extends Person {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {MERGE, REFRESH})
     @JoinTable(name = "vet_specialties", joinColumns = { @JoinColumn(name = "vet_id")}, inverseJoinColumns = { @JoinColumn(name = "specialty_id") })
-    //@Builder.Default
-    final private Set<Specialty> specialties = new HashSet<>();
+    @Builder.Default
+    private Set<Specialty> specialties = new HashSet<>();
 }
