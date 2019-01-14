@@ -1,14 +1,12 @@
 package guru.springframework.sfgpetclinic.bootstrap;
 
 import guru.springframework.sfgpetclinic.model.*;
-import guru.springframework.sfgpetclinic.services.OwnerService;
-import guru.springframework.sfgpetclinic.services.PetTypeService;
-import guru.springframework.sfgpetclinic.services.SpecialtyService;
-import guru.springframework.sfgpetclinic.services.VetService;
-import guru.springframework.sfgpetclinic.services.map.VisitMapService;
+import guru.springframework.sfgpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 
 @Component
@@ -18,15 +16,19 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
-    private final VisitMapService visitMapService;
+    private final VisitService visitService;
+
+    private final EntityManager entityManager;
 
     public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
-                      SpecialtyService specialtyService, VisitMapService visitMapService) {
+                      SpecialtyService specialtyService, VisitService visitService, EntityManager entityManager) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
-        this.visitMapService = visitMapService;
+        this.visitService = visitService;
+
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -39,6 +41,7 @@ public class DataLoader implements CommandLineRunner {
         }
     }
 
+    @Transactional
     private void loadData() {
 
         PetType dog = new PetType();
@@ -100,13 +103,14 @@ public class DataLoader implements CommandLineRunner {
         catVisit.setDate(LocalDate.now());
         catVisit.setDescription("Sneezy Kitty");
 
-        visitMapService.save(catVisit);
+        visitService.save(catVisit);
 
         System.out.println("Loaded Visits...");
 
         Vet vet1 = new Vet();
         vet1.setFirstName("Sam");
         vet1.setLastName("Axe");
+        vetService.save(vet1);
 
         vet1.getSpecialties().add(savedRadiology);
         vetService.save(vet1);
@@ -114,8 +118,9 @@ public class DataLoader implements CommandLineRunner {
         Vet vet2 = new Vet();
         vet2.setFirstName("Jessie");
         vet2.setLastName("Porter");
-        vet2.getSpecialties().add(savedSurgery);
+        vetService.save(vet2);
 
+        vet2.getSpecialties().add(savedSurgery);
         vetService.save(vet2);
 
         System.out.println("Loaded Vets...");
