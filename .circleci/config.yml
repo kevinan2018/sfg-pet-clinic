@@ -30,6 +30,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - run: ./mvnw install -DiskTests
+
       - run: ./mvnw dependency:go-offline
 
       - save_cache:
