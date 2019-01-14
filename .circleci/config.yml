@@ -30,6 +30,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - run: ./mvnw dependency:resolve
+
       - run: ./mvnw install -DskipTests
 
       - run: ./mvnw dependency:go-offline
