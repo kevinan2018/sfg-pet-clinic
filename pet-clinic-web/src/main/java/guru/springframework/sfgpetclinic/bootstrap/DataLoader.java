@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 
 @Component
@@ -18,17 +17,13 @@ public class DataLoader implements CommandLineRunner {
     private final SpecialtyService specialtyService;
     private final VisitService visitService;
 
-    private final EntityManager entityManager;
-
     public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
-                      SpecialtyService specialtyService, VisitService visitService, EntityManager entityManager) {
+                      SpecialtyService specialtyService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
         this.visitService = visitService;
-
-        this.entityManager = entityManager;
     }
 
     @Override
@@ -42,7 +37,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Transactional
-    private void loadData() {
+    protected void loadData() {
 
         PetType dog = new PetType();
         dog.setName("Dog");
@@ -64,12 +59,12 @@ public class DataLoader implements CommandLineRunner {
         dentistry.setDescription("Dentistry");
         Specialty savedDentistry = specialtyService.save(dentistry);
 
-        Owner owner1 = new Owner();
-        owner1.setFirstName("Michael");
-        owner1.setLastName("Weston");
-        owner1.setAddress("123 Brickerel");
-        owner1.setCity("Miami");
-        owner1.setTelephone("1231231234");
+        Owner owner1 = Owner.builder().address("1231231234")
+                .city("Miami")
+                .firstName("Michael")
+                .lastName("Weston")
+                .telephone("1231231234")
+                .build();
 
         Pet mikesPet = new Pet();
         mikesPet.setPetType(savedDogPetType);
@@ -110,16 +105,12 @@ public class DataLoader implements CommandLineRunner {
         Vet vet1 = new Vet();
         vet1.setFirstName("Sam");
         vet1.setLastName("Axe");
-        vetService.save(vet1);
-
         vet1.getSpecialties().add(savedRadiology);
         vetService.save(vet1);
 
         Vet vet2 = new Vet();
         vet2.setFirstName("Jessie");
         vet2.setLastName("Porter");
-        vetService.save(vet2);
-
         vet2.getSpecialties().add(savedSurgery);
         vetService.save(vet2);
 
