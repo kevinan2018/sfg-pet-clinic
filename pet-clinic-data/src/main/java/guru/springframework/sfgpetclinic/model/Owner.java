@@ -29,4 +29,20 @@ public class Owner extends Person {
     @Builder.Default
     private Set<Pet> pets = new HashSet<>();
 
+    public Pet getPet(String name) {
+        return getPet(name, false);
+    }
+
+    // ignoreNew: true - only compare persisted pets
+    public Pet getPet(String name, boolean ignoreNew) {
+        for (Pet pet : pets) {
+            if (!ignoreNew || !pet.isNew()) {
+                if (pet.getName().equalsIgnoreCase(name)) {
+                    return pet;
+                }
+            }
+        }
+        return null;
+    }
+
 }
