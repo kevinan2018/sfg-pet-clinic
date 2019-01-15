@@ -29,5 +29,9 @@ public abstract class BaseEntity <T extends Comparable<? super T>> implements Se
         return id.compareTo(other.id);
     }
 
+    public boolean isNew() {
+        return id == null;
+    }
+
     abstract public T nextId(T t);
 }
