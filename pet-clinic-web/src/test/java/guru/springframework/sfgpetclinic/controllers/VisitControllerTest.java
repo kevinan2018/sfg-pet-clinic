@@ -3,6 +3,7 @@ package guru.springframework.sfgpetclinic.controllers;
 import guru.springframework.sfgpetclinic.model.Owner;
 import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
+import guru.springframework.sfgpetclinic.model.Visit;
 import guru.springframework.sfgpetclinic.services.PetService;
 import guru.springframework.sfgpetclinic.services.VisitService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -92,6 +96,12 @@ class VisitControllerTest {
                     .param("description", ANOTHER_VISIT_DESCRIPTION))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(REDIRECT_OWNER_URI))
-                .andExpect(model().attributeExists("visit"));
+                .andExpect(model().attributeExists("visit"))
+                .andExpect(model().attribute("visit", instanceOf(Visit.class)))
+                .andExpect(model().attributeExists("pet"))
+                .andExpect(model().attribute("pet", hasProperty("visits", hasSize(1))))
+                .andExpect(model().attributeHasNoErrors("visit"));
+
+
     }
 }
