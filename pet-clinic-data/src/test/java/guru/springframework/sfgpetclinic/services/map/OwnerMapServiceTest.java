@@ -79,4 +79,10 @@ class OwnerMapServiceTest {
         ownerMapService.deleteById(ownerId);
         assertEquals(0, ownerMapService.findAll().size());
     }
+
+    @Test
+    void deleteByWrongId() {
+        ownerMapService.deleteById(5L);
+        assertEquals(1, ownerMapService.findAll().size());
+    }
 }
