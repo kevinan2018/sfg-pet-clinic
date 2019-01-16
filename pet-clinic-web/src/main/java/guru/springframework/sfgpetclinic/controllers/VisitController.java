@@ -57,7 +57,8 @@ public class VisitController {
             //visitService.save(visit);
             //petService.save(model.get("pet"));
             petService.save(pet);
-            return "redirect:/owners/" + ownerId;
+            //return "redirect:/owners/" + ownerId;
+            return "redirect:/owners/{ownerId}";
         }
     }
 
